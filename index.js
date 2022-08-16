@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+
 const FriendsApi = require("./api/FriendsApi");
 // import database and just call
 require('./config/mongodb');
@@ -14,12 +14,7 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 // accept all the json data
 app.use(express.json());
 // use cors 
-var corsOptions = {
-  origin: 'http://localhost:8080',
-  optionsSuccessStatus: 200,// For legacy browser support
-  methods: "GET, PUT"
-}
-app.use(cors(corsOptions));
+
 
 const portNumber = process.env.PORT_URL;
 

@@ -1,10 +1,15 @@
 const express = require("express");
 const FriendModels = require("../models/FriendModels");
 const router = express.Router();
+const cors = require("cors");
 
+router.use(cors());
 
 // as per your requirement import the model
-router.get("/", (req, res) => {
+router.get("/", cors(), (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
     // show mesasge in bold font and in green color
     // res.send({
     //   message: "Welcome to the API",
@@ -22,7 +27,7 @@ router.get("/", (req, res) => {
 
 // post
 
-router.post("/addFriends", async (req, res) => {
+router.post("/addFriends", cors(), async (req, res) => {
     // make dynamic url
     const userExists = await FriendModels.findOne({ email: req.body.email });
     if (userExists) {
@@ -45,7 +50,7 @@ router.post("/addFriends", async (req, res) => {
 }),
 
     // read
-    router.get("/read", async (req, res) => {
+    router.get("/read", cors(), async (req, res) => {
         // two parameter is required to  get data, either it will use or not(req,res)
         const friends = await FriendModels.find();
         //   if you will concatenate with string , it will not consider a valid json
@@ -62,19 +67,19 @@ router.post("/addFriends", async (req, res) => {
     });
 
 // get data by id
-router.get("/getFriendById/:id", async (req, res) => {
+router.get("/getFriendById/:id", cors(), async (req, res) => {
     const friend = await FriendModels.findById(req.params.id);
     res.send(friend);
 });
 
 // delete data by id
-router.delete("/deleteFriendById/:id", async (req, res) => {
+router.delete("/deleteFriendById/:id", cors(), async (req, res) => {
     const deletedFriend = await FriendModels.findByIdAndDelete(req.params.id);
     res.send({ "actualData": deletedFriend, "status": "success", "message": "Friend Deleted successfully" });
 }
 );
 // update
-router.put("/updateFriendById/:id", async (req, res) => {
+router.put("/updateFriendById/:id", cors(), async (req, res) => {
     //  handle error
     try {
         const updatedFriend = await FriendModels.findByIdAndUpdate(req.params.id, req.body);
@@ -89,7 +94,7 @@ router.put("/updateFriendById/:id", async (req, res) => {
 
 
 // delete all the data from database
-router.delete("/deleteAll", async (req, res) => {
+router.delete("/deleteAll", cors(), async (req, res) => {
     const deletedAll = await FriendModels.deleteMany();
     res.send({ "actualData": deletedAll, "status": "success", "message": "All Friends Deleted successfully" });
 }
