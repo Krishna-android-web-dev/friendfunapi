@@ -4,8 +4,6 @@ const cors = require("cors");
 const FriendModels = require("./models/FriendModels");
 const mongoose = require("mongoose");
 require("dotenv").config();
-// import database and just call
-require('./config/mongodb');
 var favicon = require('serve-favicon');
 var path = require('path');
 require("dotenv").config();
